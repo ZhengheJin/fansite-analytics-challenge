@@ -50,7 +50,10 @@ def main():
                 # feature 4.
                 # 1) if some IP in the warning dict has one success login, remove it from the warning
                 if info[0] in warning and info[-2][0] == '2':
-                    del warning[info[0]]
+                    if len(warning[info[0]]) == 3 and line_timestamp - warning[info[0]][-1] < timedelta(minutes = 5):
+                        f_out.write(line)
+                    else:
+                        del warning[info[0]]
                 # 2) some IP not in the warning dict, but has one failed login
                 elif info[-2][0] != '2' and info[0] not in warning:
                     warning[info[0]] = Q.deque([line_timestamp])
